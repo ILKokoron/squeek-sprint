@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Squeek Sprint · Race the Hamster's Ghost</title>
+<meta name="description" content="A playable race game powered by Squeekchain: race a ghost replayed from Squeektoshi the hamster's real wheel-run recordings.">
+<!-- SQUEEKCHAIN PAGE TAG: if Squeekchain issues a page tag for the direct verification path, paste it here. -->
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="page" id="pageRoot">
+
+  <header class="topbar">
+    <div class="brand">
+      <canvas id="brandCanvas" class="pixel-sprite brand-pixel" width="26" height="20" aria-hidden="true"></canvas>
+      <div>
+        <h1>Squeek Sprint</h1>
+        <p class="tagline">Race the ghost of Squeektoshi, replayed from his real wheel.</p>
+      </div>
+    </div>
+    <div class="status-pill" id="statusPill" role="status">
+      <span class="dot dot-unknown" id="statusDot"></span>
+      <span id="statusText">Checking the wheel…</span>
+    </div>
+  </header>
+
+  <!-- ============ HOME ============ -->
+  <main id="viewHome" class="view">
+    <section class="card challenge-card" id="challengeCard">
+      <div class="card-head">
+        <h2>Today's Challenge</h2>
+        <span class="badge badge-real" id="ghostSourceBadge">Real ghost · Squeekchain API</span>
+      </div>
+      <div class="ghost-facts">
+        <div class="ghost-avatar" id="ghostAvatar"></div>
+        <dl class="facts">
+          <div><dt>Ghost</dt><dd id="ghostWhen">Loading runs…</dd></div>
+          <div><dt>Distance</dt><dd id="ghostSteps">- steps</dd></div>
+          <div><dt>His time</dt><dd id="ghostTime">-</dd></div>
+          <div><dt>Level</dt><dd><span class="tier" id="ghostTier">-</span></dd></div>
+          <div><dt>Your best</dt><dd id="ghostBest">No race yet, set the bar!</dd></div>
+        </dl>
+      </div>
+      <div class="row gap">
+        <button class="btn btn-primary btn-big" id="btnPlay">Race this ghost</button>
+        <button class="btn btn-ghost" id="btnNextGhostHome">Next ghost →</button>
+      </div>
+      <p class="hint" id="runsNote">Fetching real run segments from the Squeekchain API…</p>
+    </section>
+
+    <section class="card live-card" id="liveCard">
+      <div class="card-head">
+        <h2>Live Duel</h2>
+        <span class="badge" id="liveBadge">30 seconds · head-to-head</span>
+      </div>
+      <p id="liveText">Checking whether Squeektoshi is on the wheel right now…</p>
+      <button class="btn btn-live" id="btnLive" disabled>Start Live Duel</button>
+    </section>
+
+    <section class="card">
+      <h2>Your trophy shelf</h2>
+      <div class="shelf">
+        <div class="shelf-item"><span class="shelf-num" id="statWins">0</span><span>wins</span></div>
+        <div class="shelf-item"><span class="shelf-num" id="statRaces">0</span><span>races</span></div>
+        <div class="shelf-item medals" id="medalList"><span class="muted">No medals yet, beat a ghost!</span></div>
+      </div>
+      <h3 class="subhead">Track themes</h3>
+      <div class="themes" id="themeList"></div>
+    </section>
+
+    <section class="card howto">
+      <h2>How to play</h2>
+      <ol>
+        <li><strong>Tap</strong> (or press <kbd>Space</kbd>), every tap is one step for your hamster.</li>
+        <li>The <strong>ghost</strong> replays Squeektoshi's real run: he speeds up, hesitates and pauses exactly when he did on the wheel.</li>
+        <li>Mind your <strong>stamina</strong>: mashing drains it and your steps get weaker. A steady rhythm wins races.</li>
+        <li>First to complete the ghost's step count wins. Beat his actual recorded time!</li>
+      </ol>
+    </section>
+
+    <footer class="foot">
+      <p><strong>Honest data note:</strong> Ghosts are replayed from <code>GET /v1/measurement/runs</code> on the public Squeekchain API, device-signed wheel evidence (<code>certifiedCoreWork = false</code>), not SqueekCore-certified work. Live status comes from <code>GET /v1/status</code>. <strong>Your race results live only in this browser, nothing is recorded onchain.</strong> Sample ghosts, when used, are synthetic practice data and are labelled as such. No wallet, no account, no tracking.</p>
+      <p class="muted">Squeek Sprint is an independent fan game built on Squeekchain's public data (Sepolia testnet). Not an official Squeekchain product.</p>
+    </footer>
+  </main>
+
+  <!-- ============ RACE ============ -->
+  <main id="viewRace" class="view hidden">
+    <section class="card race-card" id="raceCard">
+      <div class="race-hud">
+        <div class="hud-item"><span class="hud-label">Time</span><span class="hud-value" id="hudTime">0.0s</span></div>
+        <div class="hud-item"><span class="hud-label">You</span><span class="hud-value"><span id="hudYou">0</span><span class="hud-sub"> / <span id="hudTarget">0</span></span></span></div>
+        <div class="hud-item"><span class="hud-label">Ghost</span><span class="hud-value" id="hudGhost">0</span></div>
+        <div class="hud-item"><span class="hud-label">Ghost RPM</span><span class="hud-value" id="hudRpm">0</span></div>
+      </div>
+
+      <div class="track theme-meadow" id="track">
+        <div class="lane lane-ghost">
+          <span class="lane-tag">Squeektoshi-9000 · ghost</span>
+          <div class="runner ghost-runner" id="ghostRunner"></div>
+          <div class="finish-flag" aria-hidden="true"></div>
+        </div>
+        <div class="lane lane-player">
+          <span class="lane-tag">You</span>
+          <div class="runner player-runner" id="playerRunner"></div>
+          <div class="finish-flag" aria-hidden="true"></div>
+        </div>
+        <div class="countdown hidden" id="countdown">3</div>
+      </div>
+
+      <div class="stamina-wrap">
+        <div class="stamina-head"><span>Stamina</span><span id="rhythmHint">Find a steady rhythm…</span></div>
+        <div class="stamina-bar"><div class="stamina-fill" id="staminaFill"></div></div>
+      </div>
+
+      <button class="btn btn-tap" id="btnTap">TAP TO RUN</button>
+      <div class="row gap center">
+        <span class="muted small">Tap the button, tap the track, or press Space</span>
+        <button class="btn btn-ghost btn-small" id="btnQuit">Quit race</button>
+      </div>
+      <p class="hint center" id="raceSource"></p>
+    </section>
+  </main>
+
+  <!-- ============ RESULT ============ -->
+  <main id="viewResult" class="view hidden">
+    <section class="card result-card">
+      <div class="result-banner" id="resultBanner">You win!</div>
+      <p class="result-margin" id="resultMargin"></p>
+      <dl class="facts result-facts">
+        <div><dt>Ghost source</dt><dd id="resSource">-</dd></div>
+        <div><dt>Segment</dt><dd id="resSegment" class="mono">-</dd></div>
+        <div><dt>Race</dt><dd id="resRace">-</dd></div>
+        <div><dt>Chain context</dt><dd id="resChain">-</dd></div>
+        <div><dt>Medal</dt><dd id="resMedal">-</dd></div>
+      </dl>
+      <p class="hint">Race results are stored only in this browser and are <strong>not</strong> recorded onchain. The ghost, however, was 100% his real run.</p>
+      <div class="row gap wrap">
+        <button class="btn btn-primary" id="btnAgain">Race again</button>
+        <button class="btn" id="btnNextGhost">Next ghost →</button>
+        <button class="btn" id="btnShare">Download share card</button>
+        <button class="btn btn-ghost" id="btnHome">Home</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<canvas id="shareCanvas" width="1200" height="630" class="hidden"></canvas>
+<script src="samples.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
