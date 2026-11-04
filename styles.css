@@ -1,0 +1,181 @@
+/* Squeek Sprint: PIXEL ART theme.
+   Deliberately simple retro look: limited palette, hard shadows, blocky
+   shapes, chunky monospace headings, sprites drawn on tiny canvases with
+   image-rendering: pixelated. No external assets, no licensed fonts. */
+:root{
+  --ink:#33241a; --ink-soft:#7a5c40; --paper:#fdf3d8; --card:#fffaf0;
+  --line:#33241a; --accent:#e8622c; --accent-dark:#b34a1f;
+  --good:#3da35d; --good-dark:#2b7a44; --bad:#d6455b; --gold:#f2b33d;
+  --sky:#ffe1a8; --radius:6px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Verdana,Geneva,system-ui,sans-serif;font-size:16px;line-height:1.55;
+  background:var(--paper);color:var(--ink);
+  background-image:repeating-linear-gradient(0deg,rgba(51,36,26,.045) 0 4px,transparent 4px 8px)}
+.page{max-width:560px;margin:0 auto;padding:14px 14px 40px}
+.hidden{display:none!important}
+.muted{color:var(--ink-soft)} .small{font-size:.82rem}
+.mono{font-family:"Courier New",ui-monospace,monospace;font-size:.8rem;word-break:break-all}
+.hint{font-size:.86rem;color:var(--ink-soft);line-height:1.5;font-style:italic}
+.center{text-align:center}.row{display:flex;align-items:center}.gap{gap:10px}.wrap{flex-wrap:wrap}
+h1,h2,.btn,.result-banner,.countdown{
+  font-family:"Courier New",ui-monospace,Menlo,monospace;text-transform:uppercase;letter-spacing:.05em}
+kbd{background:#fff;border:2px solid var(--ink);border-bottom-width:4px;padding:0 6px;font-size:.85em}
+code{background:#ffe9bd;padding:0 4px;font-size:.92em}
+
+/* header */
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin:6px 0 14px}
+.brand{display:flex;gap:12px;align-items:center}
+.brand h1{font-size:1.5rem;margin:0;text-shadow:3px 3px 0 #f2b33d}
+.tagline{margin:3px 0 0;color:var(--ink-soft);font-size:.9rem;line-height:1.35;font-style:italic}
+.pixel-sprite{image-rendering:pixelated;image-rendering:crisp-edges}
+.brand-pixel{width:65px;height:50px;flex:none}
+.status-pill{display:flex;align-items:center;gap:8px;background:var(--card);border:3px solid var(--line);
+  padding:7px 12px;font-size:.8rem;font-weight:700;box-shadow:4px 4px 0 rgba(51,36,26,.85);white-space:nowrap}
+.dot{width:10px;height:10px;flex:none;background:#c9b8a6;border:2px solid var(--line)}
+.dot-run{background:var(--good);animation:blinkstep 1s steps(2,start) infinite}
+.dot-still{background:var(--gold)}
+.dot-unknown{background:#c9b8a6}
+@keyframes blinkstep{50%{opacity:.35}}
+
+/* cards & buttons */
+.card{background:var(--card);border:3px solid var(--line);border-radius:var(--radius);
+  padding:16px;margin-bottom:16px;box-shadow:6px 6px 0 rgba(51,36,26,.85)}
+.card h2{margin:0 0 10px;font-size:1.02rem;font-weight:700}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.subhead{margin:16px 0 8px;font-size:.95rem;font-weight:700;font-family:"Courier New",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.05em}
+.btn{appearance:none;border:3px solid var(--ink);background:#fff;color:var(--ink);border-radius:var(--radius);
+  padding:11px 16px;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 0 var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-big{flex:1;font-size:1.05rem;padding:14px 16px}
+.btn-ghost{color:var(--ink-soft);box-shadow:0 4px 0 #b9a184}
+.btn-live{background:var(--good);color:#fff}
+.btn-live:disabled{background:#e5d9bd;color:var(--ink-soft)}
+.btn-small{padding:6px 10px;font-size:.8rem}
+.badge{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--sky);border:2px solid var(--ink);padding:3px 8px;color:#8a5a1d;white-space:nowrap}
+.badge-real{background:#cdeac0;color:#256b38}
+.badge-sample{background:#ffd3dd;color:#a3134a}
+
+/* challenge card */
+.ghost-facts{display:flex;gap:14px;align-items:center;margin:6px 0 12px}
+.ghost-avatar{flex:none;width:86px;height:86px;background:#ffe9bd;border:3px solid var(--ink);
+  display:flex;align-items:center;justify-content:center}
+.ghost-avatar canvas{width:76px;height:62px}
+.facts{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;flex:1}
+.facts div{display:flex;flex-direction:column}
+.facts dt{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft)}
+.facts dd{margin:1px 0 0;font-weight:600;font-size:.93rem}
+.tier{display:inline-block;background:#fff0bd;border:2px solid var(--ink);color:#8a5a1d;padding:2px 9px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+
+/* trophy shelf + themes */
+.shelf{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.shelf-item{display:flex;flex-direction:column;align-items:center;min-width:58px}
+.shelf-num{font-size:1.5rem;font-weight:800}
+.shelf-item span:last-child{font-size:.8rem;color:var(--ink-soft)}
+.medals{flex-direction:row;flex-wrap:wrap;gap:6px;align-items:center}
+.medal{font-size:.78rem;font-weight:700;background:#fff0bd;border:2px solid var(--ink);padding:3px 9px}
+.themes{display:flex;gap:8px;flex-wrap:wrap}
+.theme-btn{border:3px solid var(--ink);background:#fff;padding:8px 12px;font-weight:700;cursor:pointer;font-size:.88rem;box-shadow:0 3px 0 var(--ink)}
+.theme-btn.active{background:#ffe1a8}
+.theme-btn.locked{opacity:.55;cursor:not-allowed}
+
+/* how to + footer */
+.howto ol{margin:0;padding-left:20px;line-height:1.6;font-size:.94rem}
+.foot{font-size:.82rem;color:var(--ink-soft);line-height:1.5;padding:2px 4px}
+
+/* race: blocky pixel track: hard-stop stripes, dirt strip, checker flags */
+.race-hud{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.hud-item{background:#fff3cf;border:3px solid var(--ink);padding:6px 4px;text-align:center}
+.hud-label{display:block;font-size:.64rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft)}
+.hud-value{font-size:1.08rem;font-weight:800}
+.hud-sub{font-size:.78rem;color:var(--ink-soft);font-weight:600}
+.track{position:relative;border:3px solid var(--ink);margin-bottom:12px;overflow:hidden;background:#8ec9e8}
+.lane{position:relative;height:88px}
+.lane-ghost{border-bottom:4px solid var(--ink)}
+.lane-tag{position:absolute;top:6px;left:8px;font-size:.68rem;font-weight:700;background:#fff;border:2px solid var(--ink);padding:1px 7px;color:var(--ink);z-index:2;font-family:"Courier New",monospace;text-transform:uppercase}
+.theme-meadow .lane-ghost{background:repeating-linear-gradient(90deg,#a8ddf0 0 32px,#9bd2ec 32px 64px)}
+.theme-meadow .lane-player{background:repeating-linear-gradient(90deg,#8fce6e 0 32px,#83c464 32px 64px)}
+.theme-sunset .lane-ghost{background:repeating-linear-gradient(90deg,#ffb37e 0 32px,#ffa26b 32px 64px)}
+.theme-sunset .lane-player{background:repeating-linear-gradient(90deg,#ff9db0 0 32px,#ff8aa2 32px 64px)}
+.theme-night .lane-ghost{background:repeating-linear-gradient(90deg,#33477a 0 32px,#2b3d6b 32px 64px)}
+.theme-night .lane-player{background:repeating-linear-gradient(90deg,#42598f 0 32px,#3a4f82 32px 64px)}
+.theme-night .lane-tag{background:#1d2947;color:#dbe6ff}
+.theme-candy .lane-ghost{background:repeating-linear-gradient(90deg,#ffd7ef 0 32px,#ffc9e6 32px 64px)}
+.theme-candy .lane-player{background:repeating-linear-gradient(90deg,#a5ecff 0 32px,#93e4ff 32px 64px)}
+.runner{position:absolute;bottom:10px;left:2%;width:78px;height:60px;z-index:1}
+.runner canvas{width:100%;height:100%}
+.ghost-runner{opacity:.92}
+.finish-flag{position:absolute;right:10px;top:0;bottom:0;width:12px;z-index:0;
+  background:repeating-conic-gradient(var(--ink) 0 25%,#fff 0 50%) 0 0/12px 12px;border-left:3px solid var(--ink)}
+.countdown{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:4.6rem;font-weight:700;color:#fff;text-shadow:5px 5px 0 var(--ink);background:rgba(51,36,26,.25);z-index:3}
+.stamina-wrap{margin-bottom:12px}
+.stamina-head{display:flex;justify-content:space-between;font-size:.85rem;font-weight:700;margin-bottom:5px}
+#rhythmHint{color:var(--ink-soft);font-weight:400;font-style:italic}
+.stamina-bar{height:16px;background:#e5d9bd;border:3px solid var(--ink)}
+.stamina-fill{height:100%;width:100%;background:repeating-linear-gradient(90deg,var(--good) 0 10px,var(--good-dark) 10px 12px)}
+.stamina-fill.low{background:repeating-linear-gradient(90deg,var(--bad) 0 10px,#a92c40 10px 12px)}
+.btn-tap{width:100%;padding:20px;font-size:1.25rem;background:var(--accent);color:#fff;margin-bottom:10px;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.btn-tap:active{background:var(--accent-dark)}
+
+/* result */
+.result-banner{font-size:1.6rem;font-weight:700;text-align:center;padding:14px;border:3px solid var(--ink);margin-bottom:10px}
+.result-banner.win{background:#cdeac0;color:#256b38}
+.result-banner.lose{background:#ffd3dd;color:#a3134a}
+.result-banner.tie{background:#fff0bd;color:#8a5a1d}
+.result-margin{text-align:center;font-size:1rem;font-weight:400;font-style:italic;margin:4px 0 14px}
+.result-facts{grid-template-columns:1fr;margin-bottom:10px}
+.result-facts div{flex-direction:row;justify-content:space-between;gap:12px;border-bottom:2px dashed #c9b184;padding:5px 0}
+.result-facts dd{text-align:right}
+
+@media (max-width:380px){
+  .race-hud{grid-template-columns:repeat(2,1fr)}
+  .facts{grid-template-columns:1fr}
+  .brand h1{font-size:1.25rem}
+}
+
+/* ================= Squeek Arena ================= */
+.arena-trainer-row{display:flex;gap:12px;flex-wrap:wrap}
+.arena-choice{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff8e6;border:3px solid var(--ink);border-radius:10px;padding:10px 16px;cursor:pointer;font-weight:700;font-family:inherit}
+.arena-choice.selected{background:#ffe1a8;box-shadow:inset 0 0 0 3px #e8622c}
+.arena-aura-label{display:block;font-weight:700;font-size:.85rem;margin-bottom:4px}
+#arenaAura{padding:8px 10px;border:2px solid var(--ink);border-radius:8px;font-size:1rem;width:180px;background:#fffdf4}
+.arena-gacha-row{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.arena-gacha-side{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.arena-boss-card{display:flex;gap:12px;align-items:center;border:2px solid var(--ink);border-radius:10px;padding:8px 12px;margin:8px 0;background:#fff8e6}
+.arena-boss-card .btn{margin-left:auto}
+.arena-ladder-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pk-stage{position:relative;height:330px;background:linear-gradient(#fdf3d8 62%,#cfe8a8 62%);border:3px solid var(--ink);border-radius:8px;overflow:hidden}
+.pk-info{position:absolute;background:#fffdf4;border:3px solid var(--ink);border-radius:8px;padding:6px 10px;min-width:185px;z-index:3}
+.pk-info-enemy{top:10px;left:10px}
+.pk-info-player{bottom:10px;right:10px}
+.pk-info-row{display:flex;justify-content:space-between;gap:12px;font-weight:800}
+.pk-hp{display:flex;align-items:center;gap:6px;margin-top:4px}
+.pk-hp-label{font-size:.7rem;font-weight:800;color:#b3541e}
+.pk-hp-track{flex:1;height:10px;background:#e7dcc3;border:2px solid var(--ink);border-radius:5px;overflow:hidden}
+.pk-hp-fill{height:100%;width:100%;transition:width .4s ease}
+.pk-hp-num{font-size:.8rem;font-weight:700;text-align:right;margin-top:2px}
+.pk-boss{position:absolute;top:14px;right:16px;width:130px;height:165px}
+.pk-player{position:absolute;bottom:6px;left:16px;width:130px;height:165px}
+.pk-trainer{position:absolute;bottom:6px;left:30px;width:100px;height:150px}
+.pk-box{margin-top:10px;border:3px solid var(--ink);border-radius:8px;background:#fffdf4;padding:12px;box-shadow:inset 0 0 0 3px #fdf3d8}
+.pk-msg{font-weight:700;margin:0 0 6px}
+.pk-q{font-size:1.05rem;margin:0 0 8px;min-height:1.4em}
+.pk-timer{height:8px;background:#e7dcc3;border-radius:4px;overflow:hidden;margin-bottom:10px}
+.pk-timer-fill{height:100%;background:#e8622c;width:100%}
+.pk-answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pk-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.pk-shake{animation:pkshake .35s}
+@keyframes pkshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.arena-cert-title{font-family:"Courier New",ui-monospace,monospace;font-weight:700;font-size:1.35rem;letter-spacing:.03em}
+.arena-cert-row{display:flex;gap:18px;align-items:flex-end;margin:10px 0}
+@media (max-width:560px){
+  .pk-answers{grid-template-columns:1fr}
+  .pk-boss,.pk-player{width:104px;height:132px}
+  .pk-trainer{width:80px;height:120px}
+  .pk-stage{height:300px}
+  .pk-info{min-width:150px}
+}
